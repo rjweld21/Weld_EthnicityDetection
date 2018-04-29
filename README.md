@@ -1,6 +1,10 @@
 # Weld_EthnicityDetection
-Final project for Rowan University Spring 2018 Machine Learning course with Dr.
-Rasool.
+Institution: Rowan University
+Term: Spring 2018
+Course: Topics in Machine Learning and Data Mining
+Professor: Dr. Rasool
+Project By: Robert Weld
+Project Description: Final project for classification of subject ethnicity within an image
 
 ## DISCLAIMER
 All data used for the training of this algorithm is proprietary and cannot be uploaded to the git repository. Data not used for training has been uploaded to the 'images' directory as an example of what was used and the data corresponding to these images can be found in the 'subData' directory.
