@@ -1,9 +1,9 @@
 # Weld_EthnicityDetection
-Institution: Rowan University
-Term: Spring 2018
-Course: Topics in Machine Learning and Data Mining
-Professor: Dr. Rasool
-Project By: Robert Weld
+Institution: Rowan University\
+Term: Spring 2018\
+Course: Topics in Machine Learning and Data Mining\
+Professor: Dr. Rasool\
+Project By: Robert Weld\
 Project Description: Final project for classification of subject ethnicity within an image
 
 ## DISCLAIMER
