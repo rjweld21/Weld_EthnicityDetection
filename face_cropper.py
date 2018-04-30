@@ -311,7 +311,9 @@ for imgInd, oneFile in enumerate(toIter):
 	sub = '.'.join(oneFile.split('/')[-1].split('_')[:2])
 	frameNum = oneFile.split('_')[-1].split('.')[0]
 	ext = oneFile.split('.')[-1]
-	outFile = os.path.join(outFolder, 'BESTCROP-' + frameNum + '.1-' + sub + '_cssfacefacts.' + ext)
+	#outFile = os.path.join(outFolder, 'BESTCROP-' + frameNum + '.1-' + sub + '_cssfacefacts.' + ext)
+	outFile = os.path.join(outFolder, oneFile.split('/')[-1])
+	print(outFile)
 	#print(outFile.split('/')[-1])
     #outFile = os.path.join(outFolder, 'BESTCROP-1.1-' + oneFile.split('/')[-1])
 
