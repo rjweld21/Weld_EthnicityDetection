@@ -15,6 +15,7 @@ from keras.regularizers import l2
 from keras.models import Model
 from keras.datasets import cifar10
 import keras.backend as K
+from keras.utils.vis_utils import plot_model
 
 from time import sleep
 from math import ceil
@@ -81,6 +82,7 @@ def replace_image_names(paths, DF):
     print('Replacing filenames in DF with full paths')
     new_df = pd.DataFrame(columns=('path', 'ethnicity'))
 
+
     # Replaces image cells to only include "sub.[SUBNUMwxyz]" from cssff_ethLabels.csv file
     df = format_subs(DF)
 
@@ -90,6 +92,8 @@ def replace_image_names(paths, DF):
     # Enumerates through paths getting subject number
     for i, onePath in enumerate(paths):
         # Tries to parse by one format type... If this fails it tries parsing by other format type
+        fileSub = onePath.split('/')[-1]
+        """
         try:
             # Tries to parse format of "BESTCROP-zzzz.1-sub.[SUBNUMwxyz]_cssfacefacts_cssfacefacts.jpg"
                 # Where SUBNUMwxyz is the subject number
@@ -100,7 +104,7 @@ def replace_image_names(paths, DF):
                 # where SUBNUMwxyz is the subject number
             int(onePath.split('/')[-1].split('_')[1])
             fileSub = '.'.join(onePath.split('/')[-1].split('_')[:2])
-            
+        """
         # Gets ethnicity for file and loads params into new_df
         fileEth = df[df['image']==fileSub]['ethnicity'].iloc[0]
         new_df.loc[i] = [onePath, fileEth]
@@ -160,11 +164,11 @@ def str_to_oneHot(string):
     
     return out_list
 
-def load_sets(imagePath='data/cssff-crops', ethPath='data/cssff_ethLabels.csv',
-              tr_path='data/resnetEthAlgo/load_files/eth_train.csv',
-              val_path='data/resnetEthAlgo/load_files/eth_validation.csv', 
-              test_path='data/resnetEthAlgo/load_files/eth_testing.csv', 
-              labels_path='data/resnetEthAlgo/load_files/eth_labels.csv', proc_choice=1):
+def load_sets(imagePath='images/cropped', ethPath='subData/ethLabels.csv',
+              tr_path='subData/eth_train.csv',
+              val_path='subData/eth_validation.csv', 
+              test_path='subData/eth_testing.csv', 
+              labels_path='subData/eth_labels.csv', proc_choice=1):
     # Either processes images and data or loads preprocessed data from file
 
     # Gets all non-processed image file and subject data
@@ -181,7 +185,8 @@ def load_sets(imagePath='data/cssff-crops', ethPath='data/cssff_ethLabels.csv',
     if proc_choice==1:
         print('Processing paths with first choice... This may take some time...')
         # Replace image names to be more standardized then reduce Caucasian set by 40% to even out classes
-        ethData = remove_some_eth(replace_image_names(cropPaths, ethData), label='Caucasian', reduce=0.6,
+        # NOTE: FOR GIT REPO REDUCE HAS BEEN SET TO 1 SO NO ROWS ARE DROPPED
+        ethData = remove_some_eth(replace_image_names(cropPaths, ethData), label='Caucasian', reduce=1,
                                  poss_labels=poss_labels)
         # Replace ethnicity column with the oneHot equivalents
         ethData['ethnicity'] = list(getOneHot(np.array(ethData['ethnicity'].tolist()), poss_labels))
@@ -521,12 +526,16 @@ def completeEpoch(epoch_metrics, metrics_file, acc, allAcc, loss, incorrect_dict
 
 
 # Get all image paths
-image_path = 'data/cssff-crops'
+image_path = 'subData/cropped'
 #imagePaths = join_image_paths(image_path)
 
 # Creates log file paths and base folder paths for models and logs
-base_models = 'data/resnetEthAlgo/models'
-base_logs = 'data/resnetEthAlgo/logs'
+base_models = 'models'
+base_logs = 'logs'
+for _folder in [base_models, base_logs]:
+	if not os.path.exists(_folder):
+		os.mkdir(_folder)
+
 progress_log = os.path.join(base_logs, 'ResNet-printout.txt')
 metrics_path = os.path.join(base_logs, 'ResNet-ethModelMetrics.csv')
 incorrect_preds_path = os.path.join(base_logs, 'ResNet-incorrectPredMetrics.csv')
@@ -537,7 +546,7 @@ printO('CLEARFILE', filename=metrics_path, custom_header='EPOCH,TR_ACC,TR_LOSS,V
 printO('CLEARFILE', filename=incorrect_preds_path, header=False)
 
 # Get training, validation and testing sets. Also gets full data and de-duplicated class list
-tr_set, val_set, ts_set, eth_data, classes = load_sets(proc_choice=2)
+tr_set, val_set, ts_set, eth_data, classes = load_sets(proc_choice=1)
 num_classes = len(classes)
 
 # Sets up image data generator for training

@@ -116,11 +116,10 @@ def cropFace(image, croppingPoints):
 	featureMask = np.zeros((image.shape[0], image.shape[1]))
 	outFace = np.zeros_like(image)
 
-	cv2.fillConvexPoly(featureMask, croppingPoints, 1)
+	cv2.fillConvexPoly(featureMask, croppingPoints, 1) #Used for masking
 
-	featureMask = featureMask.astype(np.bool)
+	featureMask = featureMask.astype(np.bool) #Used for masking
 	outFace = image[y_top:y_bot, x_left:x_right]
-	#outFace = outFace[y_top:y_bot, x_left:x_right]
 	#cv2.imshow('Cropping Mask', outFace)
 
 	try:
