@@ -29,5 +29,5 @@ When adding new data...
 3. Append data/ethLabels.csv folder with a new row with new images' data
 
 ## ADDITIONAL INFORMATION
-1. Before running code for model creation, the data cleaning methods should be checked over to avoid any runtime errors. 
+1. Before running code for model creation, the data cleaning methods should be checked over to avoid any runtime errors. It cannot be expected what filename format will be used for added data by anyone who clones this repo and therefore the data cleaning is left as it was used by the author.
 2. As it is easily seen, the VGG16 model is an iPython notebook while the ResNet model is trained in a python script. This is because the server used for inital training with VGG16 was taken offline and another server without a running jupyter kernal had to be used. Both training models will work, though, after the data cleaning methods are checked to avoid cleaning errors.
